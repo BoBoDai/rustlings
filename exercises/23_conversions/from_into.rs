@@ -34,7 +34,17 @@ impl Default for Person {
 // 5. Parse the second element from the split operation into a `u8` as the age.
 // 6. If parsing the age fails, return the default of `Person`.
 impl From<&str> for Person {
-    fn from(s: &str) -> Self {}
+    fn from(s: &str) -> Self {
+        if let [name, age] = s.split(',').collect::<Vec<_>>()[..] {
+            if !name.is_empty() && age.parse::<u8>().is_ok() {
+                return Self {
+                    name: name.to_string(),
+                    age: age.parse::<u8>().unwrap(),
+                };
+            }
+        }
+        Self::default()
+    }
 }
 
 fn main() {
